@@ -15,6 +15,48 @@ pub enum Step<T> {
     Custom(T),
 }
 
+pub struct ParticipantStep<T> {
+    pub participant_id: u8,
+    pub step: Step<T>,
+}
+
+pub struct ParticipantSteps<T> {
+    pub steps: Vec<ParticipantStep<T>>,
+}
+
+impl<T> Default for ParticipantSteps<T> {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+impl<T> ParticipantStep<T> {
+    pub fn new(participant_id: u8, step: Step<T>) -> Self {
+        Self {
+            participant_id,
+            step,
+        }
+    }
+}
+
+impl<T> ParticipantSteps<T> {
+    pub fn new() -> Self {
+        Self { steps: Vec::new() }
+    }
+
+    pub fn push(&mut self, participant_id: u8, step: Step<T>) {
+        self.steps.push(ParticipantStep::new(participant_id, step));
+    }
+
+    pub fn len(&self) -> usize {
+        self.steps.len()
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.steps.is_empty()
+    }
+}
+
 pub struct StepInfo<T> {
     pub step: Step<T>,
     pub tick_id: TickId,
