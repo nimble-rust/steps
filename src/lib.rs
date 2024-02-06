@@ -62,7 +62,7 @@ impl<T> ParticipantSteps<T> {
 }
 
 pub struct StepInfo<T> {
-    pub step: Step<T>,
+    pub step: ParticipantSteps<T>,
     pub tick_id: TickId,
 }
 
@@ -78,14 +78,14 @@ impl<T> Default for Steps<T> {
     }
 }
 
-const TICK_ID_MAX: u32 = u32::MAX;
+pub const TICK_ID_MAX: u32 = u32::MAX;
 
 impl<T> Steps<T> {
     pub fn new() -> Self {
         Self {
             steps: VecDeque::new(),
-            expected_read_id: TickId::new(TICK_ID_MAX),
-            expected_write_id: TickId::new(TICK_ID_MAX),
+            expected_read_id: TickId::new(0),
+            expected_write_id: TickId::new(0),
         }
     }
     pub fn new_with_initial_tick(initial_tick_id: TickId) -> Self {
@@ -96,7 +96,7 @@ impl<T> Steps<T> {
         }
     }
 
-    pub fn push(&mut self, step: Step<T>) {
+    pub fn push(&mut self, step: ParticipantSteps<T>) {
         let info = StepInfo {
             step,
             tick_id: self.expected_write_id,
