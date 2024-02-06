@@ -15,6 +15,10 @@ pub enum Step<T> {
     Custom(T),
 }
 
+pub trait Deserialize {
+    fn deserialize(bytes: &[u8]) -> Self where Self : Sized;
+}
+
 pub struct ParticipantStep<T> {
     pub participant_id: u8,
     pub step: Step<T>,
